@@ -85,8 +85,33 @@ def get_measurement_rows(db: Session):
 
 
 # Получение одной записи измерений по ID
-def get_measurement_row(db: Session, row_id: int):
-    return db.query(MeasurementRowModel).filter(MeasurementRowModel.id == row_id).first()
+def get_measurement_row(db: Session, sensor_id: int):
+    return (db.query(
+        MeasurementRowModel.sensor_id,
+        MeasurementRowModel.measurent_value,
+        MeasurementTypeModel.type_name,
+        MeasurementRowModel.measurement_ts,
+        MeteostationModel.meteostation_name,
+        SensorModel.sensor_name)
+        .join(SensorModel)
+        .join(MeteostationModel)
+        .join(MeasurementTypeModel)
+        .filter(MeasurementRowModel.sensor_id == sensor_id)
+        .all())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Создание новой записи измерений
 def create_measurement_row(db: Session, measurement_row: MeasurementRowCreateUpdate):

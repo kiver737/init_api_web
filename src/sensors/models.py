@@ -12,4 +12,4 @@ class SensorModel(Base):
     __tablename__ = 'sensors'
     sensor_1d = Column(Integer, primary_key=True)
     sensor_name = Column(String)
-    measurements = relationship("MeasurementRowModel", back_populates="sensor")
+    #measurements = relationship("MeasurementRowModel", back_populates="sensor")

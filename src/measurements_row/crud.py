@@ -47,22 +47,42 @@
 #     return False
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from .models import MeasurementRowModel, SensorModel
+from .models import MeasurementRowModel, SensorModel, MeteostationModel, MeasurementTypeModel
 from .schemas import MeasurementRowCreateUpdate
-from ..meteostations_raw.models import MeteostationModel
+
 
 
 # Получение всех записей измерений
+# def get_measurement_rows(db: Session):
+#
+#     return (db.query(
+#         MeasurementRowModel.sensor_id,
+#         MeasurementRowModel.measurent_value,
+#         MeasurementRowModel.measurments,
+#         MeasurementRowModel.measurement_ts,
+#         MeasurementRowModel.meteostation_id,
+#         SensorModel.sensor_name)
+#             .join(SensorModel).all())
+
 def get_measurement_rows(db: Session):
 
     return (db.query(
         MeasurementRowModel.sensor_id,
         MeasurementRowModel.measurent_value,
-        MeasurementRowModel.measurments,
+        MeasurementTypeModel.type_name,
         MeasurementRowModel.measurement_ts,
-        MeasurementRowModel.meteostation_id,
+        MeteostationModel.meteostation_name,
         SensorModel.sensor_name)
-            .join(SensorModel).all())
+        .join(SensorModel)
+        .join(MeteostationModel)
+        .join(MeasurementTypeModel)
+        .all())
+
+
+
+
+
+
 
 # Получение одной записи измерений по ID
 def get_measurement_row(db: Session, row_id: int):
